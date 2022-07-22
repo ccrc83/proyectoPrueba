@@ -1,0 +1,18 @@
+
+	@Query(nativeQuery = true, value = "select distinct hf.id_wbs, hf.id_pedido, hf.linea_pedido,  \r\n" + 
+			"	 hf.expediente, concat(hf.id_pedido, '-', hf.linea_pedido),hf.id as id_hito,hf.importe,hot.id as id_orden_trabajo\r\n" + 
+			"	 from hito_facturacion hf, compania c, instancia_servicio is2, sociedad_fi sf, mercado m,hito_orden_trabajo hot\r\n" + 
+			"	 where hf.id_cliente_facturacion = c.id \r\n" + 
+			"	 and hf.id_wbs = is2.id_sap \r\n" + 
+			"	 and is2.id_sociedad_fi = sf.id \r\n" + 
+			"	 and sf.id_mercado = m.id \r\n" + 
+			"	 and hf.expediente is not null \r\n" + 
+			"	 and hf.expediente <> '' \r\n" + 
+			"	 and hf.id =  hot.id_hito\r\n" + 
+			"	 and m.id in :idMercado \r\n" + 
+			"	 and sf.id in :idSociedadFi \r\n" + 
+			"	 and c.id in :idCompania \r\n" + 
+			"	 and hf.estado_hito_facturacion in :estados \r\n" + 
+			"	 order by 1, 5, 4") 	
+	List<Object[]> listHitosWbsExpedienteDetalle(@Param("idMercado") List<String> idMercado, @Param("idSociedadFi") List<String> idSociedadFi, 
+			@Param("idCompania") List<Long> idCompania, @Param("estados") List<String> estados);
